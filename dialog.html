@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>移动端弹出框组件</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<meta name="format-detection" content="telephone=no,email=no" />
+	<style>
+	*{margin:0;padding:0;}
+	body{font-size: 12px;padding:20px;}
+	button{display: block;;width:100%;padding: 10px;margin: 20px 0;background-color: green;
+		border-radius: 10px;color: #fff;border:1px solid #eee;}
+	</style>
+	<link rel="stylesheet" type="text/css" href="./css/dialog.css">
+	<script type="text/javascript" src="./js/zepto.min.js"></script>
+	<script type="text/javascript" src="./js/dialog.js"></script>
+</head>
+<body>
+	<!-- <div class="g-dialog-contianer">
+		<div class="dialog-window">
+			<div class="dialog-header loading"></div>
+			<div class="dialog-content">你是要删除购物车内容么你是要删除购物车内容么你是要删除购物车内容么</div>
+			<div class="dialog-footer">
+				<button>按钮1</button>
+				<button class="red">按钮2</button>
+			</div>
+		</div>
+	</div> -->
+
+	<button id="btn1">按钮01</button>
+	<button id="btn2">遮罩层上点击关闭</button>
+	<script type="text/javascript">
+	$("#btn2").tap(function(){
+		$.dialog({
+			type:"warning",
+			message:"遮罩层上点击可以关闭！",
+			buttons:[
+			{
+				text:"按钮A",
+				type:"green",
+				callback:function(){
+					// return false;
+				}
+			},
+			{
+				text:"按钮B",
+				type:"red"
+			}
+			],
+			maskOpacity:0.4,
+			maskClose:true
+
+		});
+	});
+	// var d = $.dialog();
+	$("#btn1").tap(function(){
+		$.dialog(
+		{
+			// width:200,
+			// height:60,
+			message:"3s后自动关闭",
+			type:"ok",
+			buttons:[
+			{
+				type:'red',
+				text:"不好",
+				callback:function(){
+					
+					// return false;
+				}
+			},
+			{
+				type:'green',
+				text:"好的",
+				callback:function(){
+					alert("按钮二");
+				}
+			}
+			],
+			delay:3000,
+			delayCallback:function(){
+				// alert(5555);
+			},
+			maskOpacity:0.5,
+			effect:true
+		}
+		);
+	});
+		
+	</script>
+</body>
+</html>
