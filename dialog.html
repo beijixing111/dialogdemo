@@ -8,87 +8,580 @@
 	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
 	<meta name="format-detection" content="telephone=no,email=no" />
 	<style>
-	*{margin:0;padding:0;}
-	body{font-size: 12px;padding:20px;}
-	button{display: block;;width:100%;padding: 10px;margin: 20px 0;background-color: green;
-		border-radius: 10px;color: #fff;border:1px solid #eee;}
+		*{margin:0;padding:0;}
+		body{ 
+			font-size: 12px; padding: 0px 0; position: relative; 
+		}
+		/*html,body{
+			-webkit-overflow-scrolling: touch;
+			height: 100%;
+			width: 100%; overflow: hidden;
+		}*/
+		body{
+			-webkit-overflow-scrolling: touch;
+		}
+		.box{
+			width: 100%; height: 70px;
+		}
+		.btn{
+			display: block;; padding: 10px 20px; margin: 0px 5px 10px;
+			min-width: 150px;
+			background-color: green; border-radius: 5px;color: #fff;
+			border:1px solid #eee; float: left; font-size: 14px;
+		}
+		.main{
+			height: 100%; overflow: auto;  padding: 20px 0;
+			-webkit-overflow-scrolling: touch;
+			width: 100%;
+		}
 	</style>
 	<link rel="stylesheet" type="text/css" href="./css/dialog.css">
-	<script type="text/javascript" src="./js/zepto.min.js"></script>
+	<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+	<!-- <script type="text/javascript" src="js/zepto.min.js"></script> -->
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script> -->
 	<script type="text/javascript" src="./js/dialog.js"></script>
+	<script type="text/javascript">
+		// $(function() {
+	 //    FastClick.attach(document.body);
+	 //  });
+
+	</script>
 </head>
 <body>
-	<!-- <div class="g-dialog-contianer">
-		<div class="dialog-window">
-			<div class="dialog-header loading"></div>
-			<div class="dialog-content">你是要删除购物车内容么你是要删除购物车内容么你是要删除购物车内容么</div>
-			<div class="dialog-footer">
-				<button>按钮1</button>
-				<button class="red">按钮2</button>
-			</div>
+	<!-- toast轻提示 loading alert confirm prompt operation操作 actionSheet shareActionSheet popup Modal-->
+	<div class="main">
+		<div class="box">
+			<button class="btn" id="toast0">普通文本提示</button>
+			<button class="btn" id="toast1">带图文本提示</button>
 		</div>
-	</div> -->
 
-	<button id="btn1">按钮01</button>
-	<button id="btn2">遮罩层上点击关闭</button>
-	<script type="text/javascript">
-	$("#btn2").tap(function(){
-		$.dialog({
-			type:"warning",
-			message:"遮罩层上点击可以关闭！",
-			buttons:[
-			{
-				text:"按钮A",
-				type:"green",
-				callback:function(){
-					// return false;
-				}
-			},
-			{
-				text:"按钮B",
-				type:"red"
-			}
-			],
-			maskOpacity:0.4,
-			maskClose:true
+		<div class="box">
+			<button class="btn" id="loading0">loading框</button>
+			<button class="btn" id="loading1">loading带文字框</button>
+		</div>
 
-		});
-	});
-	// var d = $.dialog();
-	$("#btn1").tap(function(){
-		$.dialog(
-		{
-			// width:200,
-			// height:60,
-			message:"3s后自动关闭",
-			type:"ok",
-			buttons:[
-			{
-				type:'red',
-				text:"不好",
-				callback:function(){
-					
-					// return false;
-				}
-			},
-			{
-				type:'green',
-				text:"好的",
-				callback:function(){
-					alert("按钮二");
-				}
-			}
-			],
-			delay:3000,
-			delayCallback:function(){
-				// alert(5555);
-			},
-			maskOpacity:0.5,
-			effect:true
-		}
-		);
-	});
+		<div class="box">
+			<button class="btn" id="alert0">alert框</button>
+			<button class="btn" id="alert1">有回调的alert框</button>
+		</div>
+
+		<div class="box">
+			<button class="btn" id="confirm0">confirm框</button>
+			<button class="btn" id="confirm1">自定义confirm框</button>
+		</div>
 		
+		<div class="box">
+			<button class="btn" id="prompt0">prompt框</button>
+			<button class="btn" id="prompt1">自定义prompt框</button>
+		</div>
+		
+		<div class="box">
+			<button class="btn" id="operation">operation框</button>
+		</div>
+		<div class="box">
+			<button class="btn" id="actionSheet0">actionSheet操作</button>
+		</div>
+		<div class="box">
+			<button class="btn" id="actionSheet1">share分享一组操作</button>
+			<button class="btn" id="actionSheet2">share分享多组操作</button>
+		</div>
+		<div class="box">
+			<button class="btn" id="popup">popup</button>
+		</div>	
+		<div class="box">
+			<button class="btn" id="modal">content内容可滚动</button>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$("#toast0").click(function(){
+			$.dialog({
+				type: 'toast',
+				delay: 1000,
+				message: '普通文本提示'
+			});	
+		});
+
+		$("#toast1").click(function(){
+			$.dialog({
+				type: "toast",
+				delay: 3000,
+				message: "3s后自动关闭",
+				iconClass: "fail",
+				delayCallback: function(){
+					$.dialog({
+						type: "toast",
+						message: "延时回调...",
+					});	
+				}
+			});	
+		});
+		
+		$("#loading0").click(function(){
+			var dialog = $.dialog({
+				type: "loading"
+			});	
+			setTimeout(function(){
+				$('#' + dialog.id).remove();
+			}, 3000);
+		});
+		$("#loading1").click(function(){
+			var dialog = $.dialog({
+				type: "loading",
+				message: "玩命加载中..."
+			});	
+			setTimeout(function(){
+				$('#' + dialog.id).remove();
+			}, 3000);
+		});
+
+
+		$("#alert0").click(function(){
+			$.dialog({
+				type: "alert",
+				message: "alert提示框",
+				effect: true,
+				maskClose: true
+			});
+		});
+
+		$("#alert1").click(function(){
+			$.dialog({
+				type: "alert",
+				message: "alert提示框",
+				effect: true,
+				callback: function(){
+					$.dialog({
+						type: "toast",
+						message: "alert回调...",
+					});	
+				},
+				maskClose: true
+			});
+		});	
+
+		$("#confirm0").click(function(){
+			$.dialog({
+				type: "confirm",
+				title: '支付提示',
+				message: "确认要支付200元么？确认要支付200元么？",
+				effect: true,
+				maskClose: true,
+				btnArr: [
+					{
+						text:"取消",
+					},
+					{
+						text: "确定",
+						callback:function(){
+							$.dialog({
+								type: "toast",
+								message: "去支付...",
+							});	
+						}
+					}
+				]
+			});
+		});	
+		$("#confirm1").click(function(){
+			$.dialog({
+				type: "confirm",
+				title: "支付提示",
+				message: '确认要支付<span style="color: red;">200</span>元么？',
+				effect: true,
+				maskClose: true,
+				btnArr: [
+					{
+						text:"取消",
+						callback:function(){
+							$.dialog({
+								type: "toast",
+								message: "已取消"
+							});	
+						}
+					},
+					{
+						text: "确定",
+						callback:function(){
+							$.dialog({
+								type: "toast",
+								delay: 2000,
+								message: "支付成功！",
+								iconClass: "success",
+								delayCallback: function(){
+									console.log(5555);
+								}
+							});	
+						}
+					}
+				]
+			});
+		});		
+
+		$("#prompt0").click(function(){
+			$.dialog({
+				type: "prompt",
+				title: '提示',
+				message: "请输入消费码",
+				effect: true,
+				maskClose: true,
+				btnArr: [
+					{
+						text:"取消"
+					},
+					{
+						text: "提交",
+						callback:function(item){
+							var _item = JSON.stringify(item);
+							$.dialog({
+								type: "toast",
+								message: '<p style="font-size: 12px;">'+ _item +'</p>',
+							});	
+						}
+					}
+				]		
+			});
+		});	
+
+		$("#prompt1").click(function(){
+			$.dialog({
+				type: "prompt",
+				message: "请先登录，再进行操作",
+				effect: true,
+				maskClose: true,
+				inputArr: [
+					{name: 'username', 'placeholder': '账号'},
+					{name: 'password', 'placeholder': '密码' }
+				],
+				btnArr: [
+					{
+						text:"取消"
+					},
+					{
+						text: "提交",
+						callback:function(item){
+							var _item = JSON.stringify(item);
+							$.dialog({
+								type: "toast",
+								message: '<p style="font-size: 12px;">'+ _item +'</p>',
+							});	
+						}
+					}
+				]		
+			});
+		});	
+
+		$("#operation").click(function(){
+			$.dialog({
+				type: "operation",
+				btnArr: [
+					{
+						text:"标为未读",
+						callback:function(){
+							$.dialog({
+								type: "toast",
+								message: '标为未读回调...',
+							});	
+						}
+					},
+					{
+						text: "置顶聊天",
+						callback:function(){
+							$.dialog({
+								type: "toast",
+								message: '置顶聊天回调...',
+							});
+						}
+					}
+				],
+				maskOpacity: 0.5,
+				maskClose: true,
+				effect: true
+			});
+		});
+		$("#actionSheet0").click(function(){
+			$.dialog({
+				type: "actionSheet",
+				title: '顶部文本描述，可以省略不写',
+				btnArr: [
+					{
+						text: "发送给朋友",
+						callback:function(){
+							$.dialog({
+								type: "toast",
+								message: '发送给朋友...',
+							});
+						}
+					},
+					{
+						text: "收藏",
+						callback: function(){
+							$.dialog({
+								type: "toast",
+								message: '收藏...',
+							});
+						}
+					},{
+						text: "保存图片",
+						callback: function(){
+							$.dialog({
+								type: "toast",
+								message: '保存图片...',
+							});
+						}
+					}
+				],
+				maskOpacity: 0.5,
+				maskClose: true,
+				effect: true
+			});
+		});
+		
+		$("#actionSheet1").click(function(){
+			$.dialog({
+				type: "shareActionSheet",
+				title: '顶部文本描述，可以省略不写！',
+				shareGroup: [
+					{
+						text: "发送给朋友",
+						icon: '',
+						callback:function(){
+							$.dialog({
+								type: "toast",
+								message: '发送给朋友...',
+							});
+						}
+					},
+					{
+						text: "新浪微博",
+						icon: '',
+						callback:function(){
+							$.dialog({
+								type: "toast",
+								message: '新浪微博...',
+							});
+						}
+					},
+					{
+						text: "朋友圈",
+						icon: '',
+						callback:function(){
+							$.dialog({
+								type: "toast",
+								message: '朋友圈...',
+							});
+						}
+					},
+					{
+						text: "微信好友",
+						icon: '',
+						callback:function(){
+							$.dialog({
+								type: "toast",
+								message: '微信好友...',
+							});
+						}
+					},
+					{
+						text: "QQ空间",
+						icon: '',
+						callback:function(){
+							$.dialog({
+								type: "toast",
+								message: 'QQ空间...',
+							});
+						}
+					},
+					{
+						text: "QQ好友",
+						icon: '',
+						callback:function(){
+							$.dialog({
+								type: "toast",
+								message: 'QQ好友...',
+							});
+						}
+					},
+					{
+						text: "收藏",
+						icon: './images/collection.png',
+						callback: function(){
+							$.dialog({
+								type: "toast",
+								message: '收藏...',
+							});
+						}
+					}
+				],
+				maskOpacity: 0.5,
+				maskClose: true,
+				effect: true
+			});
+		});
+
+		$("#actionSheet2").click(function(){
+			$.dialog({
+				type: "shareActionSheet",
+				title: '顶部文本描述，可以省略不写！',
+				shareGroup: [
+					[{
+						smalltitle: '私信给',
+						children: [
+							{
+								text: "好友01",
+								icon: '',
+								callback:function(){
+									$.dialog({
+										type: "toast",
+										message: '好友01...',
+									});
+								}
+							},
+							{
+								text: "好友02",
+								icon: '',
+								callback:function(){
+									$.dialog({
+										type: "toast",
+										message: '好友02...',
+									});
+								}
+							}
+						]
+					}, {
+						smalltitle: '分享到',
+						children: [
+							{
+								text: "发送给朋友",
+								icon: '',
+								callback:function(){
+									$.dialog({
+										type: "toast",
+										message: '发送给朋友...',
+									});
+								}
+							}, {
+								text: "新浪微博",
+								icon: '',
+								callback:function(){
+									$.dialog({
+										type: "toast",
+										message: '新浪微博...',
+									});
+								}
+							}, {
+								text: "朋友圈",
+								icon: '',
+								callback:function(){
+									$.dialog({
+										type: "toast",
+										message: '朋友圈...',
+									});
+								}
+							}, {
+								text: "微信好友",
+								icon: '',
+								callback:function(){
+									$.dialog({
+										type: "toast",
+										message: '微信好友...',
+									});
+								}
+							}, {
+								text: "QQ空间",
+								icon: '',
+								callback:function(){
+									$.dialog({
+										type: "toast",
+										message: 'QQ空间...',
+									});
+								}
+							}, {
+								text: "QQ好友",
+								icon: '',
+								callback:function(){
+									$.dialog({
+										type: "toast",
+										message: 'QQ好友...',
+									});
+								}
+							}
+						] 
+					}, {
+						smalltitle: '分享到',
+						children: [
+							{
+								text: "收藏",
+								icon: './images/collection.png',
+								callback: function(){
+									$.dialog({
+										type: "toast",
+										message: '收藏...',
+									});
+								}
+							},{
+								text: "复制链接",
+								icon: './images/copyhref.png',
+								callback: function(){
+									$.dialog({
+										type: "toast",
+										message: '复制链接...',
+									});
+								}
+							},{
+								text: "刷新",
+								icon: './images/reload.png',
+								callback: function(){
+									window.location.reload();
+								}
+							}
+						]
+					}]
+				],
+				maskOpacity: 0.5,
+				maskClose: true,
+				effect: true
+			});
+		});
+
+		$("#popup").click(function(){
+			$.dialog({
+				type: "popup",
+				title: '顶部文本描述，可以省略不写！',
+				message: '这里是显示内容这里是显示内容这里是显示内容这里是显示内容这里是显示内容这里是显示内容这里是显示内容这里是显示内容这里是显示内容这里是显示内容',
+				btnArr: [{
+					text: "关闭",
+					callback: function(){
+						$.dialog({
+							type: "toast",
+							message: '关闭...',
+						});
+					}
+				}],
+				maskOpacity: 0.5,
+				maskClose: true,
+				effect: true
+			});
+		});
+	
+		$("#modal").click(function(){
+			$.dialog({
+				type: "modal",
+				title: '顶部文本描述，可以省略不写！',
+				message: '这里是显示内容这里是显示内容这里是显示内容这里是显示内容这里是显示内容这里是显示内容这里是显示内容这里是显示内容这里是显示内容这里是显示内容这里是显示内容这里是显示内容这里是显示内容这里是显示内容这里是显示内容这里是显示内容这里是显示内容这里是显示内容这里是显示内容这里是显示内容容这里是显示内容容这里是显示内容容这里是显示内容容这里是显示内容容这里是显示内容容这里是显示内容容这里是显示内容容这里是显示内容',
+				btnArr: [{
+					text: "确定",
+					callback: function(){
+						$.dialog({
+							type: "toast",
+							message: '确定回调...',
+						});
+					}
+				}],
+				maskOpacity: 0.5,
+				maskClose: true,
+				effect: true
+			});
+		});
 	</script>
 </body>
 </html>
